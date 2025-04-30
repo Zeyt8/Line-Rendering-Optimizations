@@ -77,6 +77,7 @@ void UndoMutation( int i )
 // -----------------------------------------------------------
 void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
 {
+	COLORREF* pixels = screen->pixels;
     /* Make sure the line runs top to bottom */
     if (Y0 > Y1)
     {
@@ -86,7 +87,7 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
 
     /* Draw the initial pixel, which is always exactly intersected by
     the line and so needs no weighting */
-    screen->Plot(X0, Y0, clrLine);
+	pixels[X0 + Y0 * SCRWIDTH] = clrLine;
 
     short DeltaX = X1 - X0;
     int XDir = 1 | (DeltaX >> 31); // use sign bit
@@ -103,9 +104,9 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
     /* Line is not horizontal, diagonal, or vertical */
     unsigned short ErrorAcc = 0;  /* initialize the line error accumulator to 0 */
 
-    BYTE rl = GetRValue( clrLine );
-    BYTE gl = GetGValue( clrLine );
-    BYTE bl = GetBValue( clrLine );
+    BYTE rl = GetRValue(clrLine);
+    BYTE gl = GetGValue(clrLine);
+    BYTE bl = GetBValue(clrLine);
     int grayl = (rl * 77 + gl * 150 + bl * 29) >> 8; // use integer aproximation
 
     /* Is this an X-major or Y-major line? */
@@ -126,7 +127,7 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
             weighting for the paired pixel */
             Weighting = ErrorAcc >> 8;
 
-            COLORREF clrBackGround = screen->pixels[X0 + Y0 * SCRWIDTH];
+            COLORREF clrBackGround = pixels[X0 + Y0 * SCRWIDTH];
             BYTE rb = GetRValue(clrBackGround);
             BYTE gb = GetGValue(clrBackGround);
             BYTE bb = GetBValue(clrBackGround);
@@ -136,9 +137,9 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
             BYTE rr = (BYTE)((g * abs(rb - rl) >> 8) + std::min(rb, rl));
             BYTE gr = (BYTE)((g * abs(gb - gl) >> 8) + std::min(gb, gl));
             BYTE br = (BYTE)((g * abs(bb - bl) >> 8) + std::min(bb, bl));
-            screen->Plot( X0, Y0, RGB( rr, gr, br ) );
+			pixels[X0 + Y0 * SCRWIDTH] = RGB(rr, gr, br);
 
-            clrBackGround = screen->pixels[X0 + XDir + Y0 * SCRWIDTH];
+            clrBackGround = pixels[X0 + XDir + Y0 * SCRWIDTH];
             rb = GetRValue( clrBackGround );
             gb = GetGValue( clrBackGround );
             bb = GetBValue( clrBackGround );
@@ -148,11 +149,8 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
             rr = (BYTE)((g * abs(rb - rl) >> 8) + std::min(rb, rl));
             gr = (BYTE)((g * abs(gb - gl) >> 8) + std::min(gb, gl));
             br = (BYTE)((g * abs(bb - bl) >> 8) + std::min(bb, bl));
-            screen->Plot( X0 + XDir, Y0, RGB( rr, gr, br ) );
+			pixels[X0 + XDir + Y0 * SCRWIDTH] = RGB(rr, gr, br);
         }
-        /* Draw the final pixel, which is always exactly intersected by the line
-        and so needs no weighting */
-        screen->Plot( X1, Y1, clrLine );
     }
     else
     {
@@ -171,7 +169,7 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
             weighting for the paired pixel */
             Weighting = ErrorAcc >> 8;
 
-            COLORREF clrBackGround = screen->pixels[X0 + Y0 * SCRWIDTH];
+            COLORREF clrBackGround = pixels[X0 + Y0 * SCRWIDTH];
             BYTE rb = GetRValue(clrBackGround);
             BYTE gb = GetGValue(clrBackGround);
             BYTE bb = GetBValue(clrBackGround);
@@ -181,10 +179,9 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
             BYTE rr = (BYTE)((g * abs(rb - rl) >> 8) + std::min(rb, rl));
             BYTE gr = (BYTE)((g * abs(gb - gl) >> 8) + std::min(gb, gl));
             BYTE br = (BYTE)((g * abs(bb - bl) >> 8) + std::min(bb, bl));
+			pixels[X0 + Y0 * SCRWIDTH] = RGB(rr, gr, br);
 
-            screen->Plot(X0, Y0, RGB(rr, gr, br));
-
-            clrBackGround = screen->pixels[X0 + (Y0 + 1) * SCRWIDTH];
+            clrBackGround = pixels[X0 + (Y0 + 1) * SCRWIDTH];
             rb = GetRValue(clrBackGround);
             gb = GetGValue(clrBackGround);
             bb = GetBValue(clrBackGround);
@@ -194,14 +191,12 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
             rr = (BYTE)((g * abs(rb - rl) >> 8) + std::min(rb, rl));
             gr = (BYTE)((g * abs(gb - gl) >> 8) + std::min(gb, gl));
             br = (BYTE)((g * abs(bb - bl) >> 8) + std::min(bb, bl));
-
-            screen->Plot(X0, Y0 + 1, RGB(rr, gr, br));
+			pixels[X0 + (Y0 + 1) * SCRWIDTH] = RGB(rr, gr, br);
         }
     }
-
-    /* Draw the final pixel, which is always exactly intersected by the line
-    and so needs no weighting */
-    screen->Plot( X1, Y1, clrLine );
+	/* Draw the final pixel, which is always exactly intersected by the line
+	and so needs no weighting */
+	pixels[X1 + Y1 * SCRWIDTH] = clrLine;
 }
 
 // -----------------------------------------------------------
