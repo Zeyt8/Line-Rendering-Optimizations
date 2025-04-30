@@ -142,9 +142,9 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
 
 			pixelPtr += XDir;
             clrBackGround = *pixelPtr;
-            rb = GetRValue( clrBackGround );
-            gb = GetGValue( clrBackGround );
-            bb = GetBValue( clrBackGround );
+            rb = GetRValue(clrBackGround);
+            gb = GetGValue(clrBackGround);
+            bb = GetBValue(clrBackGround);
             grayb = (rb * 77 + gb * 150 + bb * 29) >> 8;
 
             g = Weighting ^ ((grayl < grayb) * 255);
@@ -185,7 +185,7 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
 			*pixelPtr = RGB(rr, gr, br);
 
 			pixelPtr += SCRWIDTH;
-            clrBackGround = pixels[X0 + (Y0 + 1) * SCRWIDTH];
+            clrBackGround = *pixelPtr;
             rb = GetRValue(clrBackGround);
             gb = GetGValue(clrBackGround);
             bb = GetBValue(clrBackGround);
