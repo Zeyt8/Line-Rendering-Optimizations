@@ -1,8 +1,6 @@
-# INFOMOV Assignment 1 Template
+# INFOMOV Assignment 1
 
-### Setup
-Clone the github repository using `git clone --recursive`, to make sure you get all the submodules.
-
+## Setup
 If you are on windows:
 * Run the `bootstrap_windows.bat` file (this requires Visual Studio 17 2022 by default).
 * Open the generated Visual Studio project located in the build folder.
@@ -13,8 +11,12 @@ If you are on Linux/Mac:
 * In your build folder you can now run `make` in the future if you want to recompile after making changes to the code.
 * Execute `./GAME` to run the project (making sure you can run it using `chmod +x GAME`)
 
-### Notes
-Has been tested on:
-* Windows
-* (Arch) Linux x86 
-* MacOS ARM
+## Changes
+
+- Precomputed gray interpolation factor, because it was the same for all 3 channels.
+- Rewrote color computations to use integer approximations
+- Replaced divisions and other expensive operations with bitwise operations
+- Replace branch instructions with bitwise operations or multiplications with comparisons
+- Replaced array access with pointer arithmetic
+- Replaced long and doubles with shorts and floats
+- Changed compiler flags to optimize for speed
