@@ -11,6 +11,10 @@ If you are on Linux/Mac:
 * In your build folder you can now run `make` in the future if you want to recompile after making changes to the code.
 * Execute `./GAME` to run the project (making sure you can run it using `chmod +x GAME`)
 
+## Expected Grade
+
+7
+
 ## Changes
 
 - Precomputed gray interpolation factor, because it was the same for all 3 channels.
