@@ -134,10 +134,10 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
             BYTE bb = GetBValue(clrBackGround);
             int grayb = (rb * 77 + gb * 150 + bb * 29) >> 8;
 
-            int g = Weighting ^ ((grayl < grayb) * 255);
-            BYTE rr = (BYTE)((g * std::abs(rb - rl) >> 8) + std::min(rb, rl));
-            BYTE gr = (BYTE)((g * std::abs(gb - gl) >> 8) + std::min(gb, gl));
-            BYTE br = (BYTE)((g * std::abs(bb - bl) >> 8) + std::min(bb, bl));
+            float g = (Weighting ^ ((grayl >= grayb) * 255)) / 255.0f;
+			BYTE rr = (BYTE)(g * std::abs(rb - rl) + std::min(rb, rl));
+            BYTE gr = (BYTE)(g * std::abs(gb - gl) + std::min(gb, gl));
+            BYTE br = (BYTE)(g * std::abs(bb - bl) + std::min(bb, bl));
 			*pixelPtr = RGB(rr, gr, br);
 
 			pixelPtr += XDir;
@@ -147,10 +147,10 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
             bb = GetBValue(clrBackGround);
             grayb = (rb * 77 + gb * 150 + bb * 29) >> 8;
 
-            g = Weighting ^ ((grayl < grayb) * 255);
-            rr = (BYTE)((g * std::abs(rb - rl) >> 8) + std::min(rb, rl));
-            gr = (BYTE)((g * std::abs(gb - gl) >> 8) + std::min(gb, gl));
-            br = (BYTE)((g * std::abs(bb - bl) >> 8) + std::min(bb, bl));
+            g = (Weighting ^ ((grayl < grayb) * 255)) / 255.0f;
+            rr = (BYTE)((g * std::abs(rb - rl)) + std::min(rb, rl));
+            gr = (BYTE)((g * std::abs(gb - gl)) + std::min(gb, gl));
+            br = (BYTE)((g * std::abs(bb - bl)) + std::min(bb, bl));
 			*pixelPtr = RGB(rr, gr, br);
         }
     }
@@ -178,10 +178,10 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
             BYTE bb = GetBValue(clrBackGround);
             int grayb = (rb * 77 + gb * 150 + bb * 29) >> 8;
 
-            int g = Weighting ^ ((grayl < grayb) * 255);
-            BYTE rr = (BYTE)((g * std::abs(rb - rl) >> 8) + std::min(rb, rl));
-            BYTE gr = (BYTE)((g * std::abs(gb - gl) >> 8) + std::min(gb, gl));
-            BYTE br = (BYTE)((g * std::abs(bb - bl) >> 8) + std::min(bb, bl));
+            float g = (Weighting ^ ((grayl >= grayb) * 255)) / 255.0f;
+            BYTE rr = (BYTE)((g * std::abs(rb - rl)) + std::min(rb, rl));
+            BYTE gr = (BYTE)((g * std::abs(gb - gl)) + std::min(gb, gl));
+            BYTE br = (BYTE)((g * std::abs(bb - bl)) + std::min(bb, bl));
 			*pixelPtr = RGB(rr, gr, br);
 
 			pixelPtr += SCRWIDTH;
@@ -191,10 +191,10 @@ void DrawWuLine( Surface *screen, int X0, int Y0, int X1, int Y1, uint clrLine )
             bb = GetBValue(clrBackGround);
             grayb = (rb * 77 + gb * 150 + bb * 29) >> 8;
 
-            g = Weighting ^ ((grayl < grayb) * 255);
-            rr = (BYTE)((g * std::abs(rb - rl) >> 8) + std::min(rb, rl));
-            gr = (BYTE)((g * std::abs(gb - gl) >> 8) + std::min(gb, gl));
-            br = (BYTE)((g * std::abs(bb - bl) >> 8) + std::min(bb, bl));
+            g = (Weighting ^ ((grayl < grayb) * 255)) / 255.0f;
+            rr = (BYTE)((g * std::abs(rb - rl)) + std::min(rb, rl));
+            gr = (BYTE)((g * std::abs(gb - gl)) + std::min(gb, gl));
+            br = (BYTE)((g * std::abs(bb - bl)) + std::min(bb, bl));
 			*pixelPtr = RGB(rr, gr, br);
         }
     }

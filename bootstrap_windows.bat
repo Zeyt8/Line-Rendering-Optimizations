@@ -34,7 +34,7 @@ vcpkg\vcpkg install zlib
 
 :: Configure the project with CMake, specifying the path to the vcpkg toolchain file
 echo Configuring CMake project
-cmake -B build -S . -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE="%CD%\vcpkg\scripts\buildsystems\vcpkg.cmake"  -DUSE_ARM=OFF -DCMAKE_CXX_FLAGS_RELEASE="/O2 /Ob2 /Oi /Ot /Oy /GL /arch:AVX512 /fp:fast"
+cmake -B build -S . -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE="%CD%\vcpkg\scripts\buildsystems\vcpkg.cmake"  -DUSE_ARM=OFF -DCMAKE_CXX_FLAGS_RELEASE="/O2 /Ob2 /Oi /Ot /Oy /GL /arch:AVX2 /fp:fast"
 
 :: Build the project using CMake
 echo Building CMake project
